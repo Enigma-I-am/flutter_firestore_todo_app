@@ -5,11 +5,11 @@ class MakeNoteScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return MakeNoteScreenState();
+    return _MakeNoteScreenState();
   }
 }
 
-class MakeNoteScreenState extends State<MakeNoteScreen> {
+class _MakeNoteScreenState extends State<MakeNoteScreen> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
