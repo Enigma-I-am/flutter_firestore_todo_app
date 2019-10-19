@@ -26,9 +26,9 @@ class thisApp extends StatelessWidget {
               fontFamily: 'Montserrat',
             ),
           );
+        } else {
+          return MyApp();
         }
-
-        return MyApp();
       },
     );
   }
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return MaterialApp(
-      home: SigninPage(),
+      home: LoginPage(),
       theme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: Colors.lightBlue[800],

@@ -1,16 +1,19 @@
+import 'dart:ui' as prefix0;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_firestore_todo_app/ui/ListScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_firestore_todo_app/ui/SignUp.dart';
 
-class SigninPage extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _SigninPageState();
+    return _LoginPageState();
   }
 }
 
-class _SigninPageState extends State<SigninPage> {
+class _LoginPageState extends State<LoginPage> {
   String _email, _password;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -34,6 +37,7 @@ class _SigninPageState extends State<SigninPage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      obscureText: true,
                       // ignore: missing_return
                       validator: (input) {
                         if (input.isEmpty) {
@@ -54,6 +58,7 @@ class _SigninPageState extends State<SigninPage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      obscureText: true,
                       // ignore: missing_return
                       validator: (input) {
                         if (input.length < 6) {
@@ -74,11 +79,35 @@ class _SigninPageState extends State<SigninPage> {
                   SizedBox(
                     width: double.infinity,
                     child: Padding(
-                        padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
+                        padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
                         child: RaisedButton(
                           onPressed: signIn,
                           child: Text("Sign In"),
                         )),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text("Don't Have an account??..."),
+                        InkWell(
+                          child: Text(
+                            " SignUp!!!",
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontStyle: prefix0.FontStyle.italic),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignUp()),
+                            );
+                          },
+                        )
+                      ],
+                    ),
                   )
                 ],
               ),
@@ -93,19 +122,15 @@ class _SigninPageState extends State<SigninPage> {
     final formState = _formKey.currentState;
     if (formState.validate()) {
       formState.save();
-      try{
-        AuthResult user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
+      try {
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: _email, password: _password);
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-              builder: (context) => ListScreen()),
+          MaterialPageRoute(builder: (context) => ListScreen()),
         );
-      }catch(error){
-
-
-      }
-
+      } catch (error) {}
     }
   }
 }
