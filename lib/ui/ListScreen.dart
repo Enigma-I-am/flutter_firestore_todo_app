@@ -5,7 +5,7 @@ import 'package:flutter_firestore_todo_app/ui/Loginpage.dart';
 import 'package:flutter_firestore_todo_app/ui/MakeNoteScreen.dart';
 import 'package:flutter_firestore_todo_app/ui/widgets/NoteListItem.dart';
 
-import '../Note.dart';
+import '../models/Note.dart';
 
 class ListScreen extends StatefulWidget {
   final FirebaseUser user;
@@ -43,6 +43,7 @@ class _ListScreenState extends State<ListScreen> {
       ),
       body: BuildList(),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.green,
         onPressed: () {
           Navigator.push(
             context,

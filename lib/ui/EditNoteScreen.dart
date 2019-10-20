@@ -1,36 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_firestore_todo_app/models/Note.dart';
 
-import '../models/Note.dart';
+class EditNoteScreen extends StatefulWidget {
+  Note noteData;
 
-class MakeNoteScreen extends StatefulWidget {
-
-
-  MakeNoteScreen();
+  EditNoteScreen(this.noteData);
 
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return _MakeNoteScreenState();
-  }
+  _EditNoteScreenState createState() => _EditNoteScreenState();
 }
 
-class _MakeNoteScreenState extends State<MakeNoteScreen> {
+class _EditNoteScreenState extends State<EditNoteScreen> {
   String _noteBody, _noteTitle;
-  DocumentSnapshot snapshot;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  _MakeNoteScreenState();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
-            onPressed: write,
+            onPressed: update,
             icon: Icon(
               Icons.check,
               color: Colors.white,
@@ -52,6 +44,7 @@ class _MakeNoteScreenState extends State<MakeNoteScreen> {
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: TextFormField(
+                  initialValue: widget.noteData.noteTitle,
                   controller: null,
                   autofocus: true,
                   maxLines: 2,
@@ -79,6 +72,7 @@ class _MakeNoteScreenState extends State<MakeNoteScreen> {
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
                   child: TextFormField(
+                    initialValue: widget.noteData.noteBody,
                     controller: null,
                     maxLines: 100,
                     onSaved: (input) => _noteBody = input,
@@ -108,17 +102,17 @@ class _MakeNoteScreenState extends State<MakeNoteScreen> {
     );
   }
 
-  write() async {
+  update() async {
     final formState = _formKey.currentState;
     if (formState.validate()) {
       formState.save();
       await Firestore.instance
           .collection("notes")
-          .add(Note(noteTitle: _noteTitle, noteBody: _noteBody).toJson());
+          .document(widget.noteData.reference.documentID)
+          .updateData(
+              Note(noteTitle: _noteTitle, noteBody: _noteBody).toJson());
 
       Navigator.pop(context);
     }
   }
-
-
 }
