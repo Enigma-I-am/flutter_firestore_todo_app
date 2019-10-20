@@ -5,8 +5,6 @@ import 'package:flutter_firestore_todo_app/models/Note.dart';
 import 'package:flutter_firestore_todo_app/Utils/randomColors.dart';
 import 'package:flutter_firestore_todo_app/ui/EditNoteScreen.dart';
 
-
-
 class NoteListItem extends StatefulWidget {
   final DocumentSnapshot snapshot;
 
@@ -31,7 +29,10 @@ class _NoteListItemState extends State<NoteListItem> {
             .delete();
 
         Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text("item Deleted"),
+          content: Text(
+            "item Deleted",
+            style: TextStyle(color: Colors.white),
+          ),
           backgroundColor: Colors.black12,
         ));
       },

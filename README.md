@@ -1,6 +1,14 @@
 # flutter_firestore_todo_app
 
-A new Flutter project.
+A new Flutter project. This is a simple Todo / Note taking app built with flutter and firestore
+![shot 1](./screenshots/flutter_01.png)
+![shot 1](./screenshots/flutter_02.png)
+![shot 1](./screenshots/flutter_03.png)
+![shot 1](./screenshots/flutter_04.png)
+![shot 1](./screenshots/flutter_05.png)
+![shot 1](./screenshots/flutter_06.png)
+![shot 1](./screenshots/flutter_07.png)
+
 
 ## Getting Started
 

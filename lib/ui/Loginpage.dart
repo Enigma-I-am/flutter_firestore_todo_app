@@ -1,6 +1,7 @@
 import 'dart:ui' as prefix0;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_firestore_todo_app/ui/ListScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_firestore_todo_app/ui/SignUp.dart';
@@ -36,8 +37,15 @@ class _LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(8.0),
+                    child: SvgPicture.asset(
+                      "assests/img.svg",
+                      height: 100.0,
+                      width: 100.0,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
-                      obscureText: true,
                       // ignore: missing_return
                       validator: (input) {
                         if (input.isEmpty) {
@@ -101,8 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => SignUp()),
+                              MaterialPageRoute(builder: (context) => SignUp()),
                             );
                           },
                         )
