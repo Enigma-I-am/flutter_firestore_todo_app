@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firestore_todo_app/models/Note.dart';
+import 'package:flutter_firestore_todo_app/core/models/Note.dart';
 import 'package:flutter_firestore_todo_app/Utils/randomColors.dart';
-import 'package:flutter_firestore_todo_app/ui/EditNoteScreen.dart';
+import 'package:flutter_firestore_todo_app/core/viewmodels/CRUDModel.dart';
+import 'package:flutter_firestore_todo_app/ui/views/EditNoteScreen.dart';
+import 'package:provider/provider.dart';
 
 class NoteListItem extends StatefulWidget {
   final DocumentSnapshot snapshot;
@@ -18,15 +20,11 @@ class _NoteListItemState extends State<NoteListItem> {
   @override
   Widget build(BuildContext context) {
     final noteData = Note.fromSnapshot(widget.snapshot);
+    final noteProvider = Provider.of<CRUDModel>(context);
     return Dismissible(
       key: Key(noteData.reference.documentID),
-      onDismissed: (direction)
-          // ignore: unnecessary_statements
-          async {
-        await Firestore.instance
-            .collection("notes")
-            .document(noteData.reference.documentID)
-            .delete();
+      onDismissed: (direction) {
+        noteProvider.removeNote(noteData.reference.documentID);
 
         Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
@@ -50,7 +48,9 @@ class _NoteListItemState extends State<NoteListItem> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => EditNoteScreen(noteData)),
+                          builder: (context) => EditNoteScreen(
+                                noteData: noteData,
+                              )),
                     );
                   },
                   child: Column(

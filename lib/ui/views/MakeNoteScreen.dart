@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_firestore_todo_app/core/viewmodels/CRUDModel.dart';
+import 'package:provider/provider.dart';
 
-import '../models/Note.dart';
+import '../../core/models/Note.dart';
 
 class MakeNoteScreen extends StatefulWidget {
 
@@ -26,11 +28,18 @@ class _MakeNoteScreenState extends State<MakeNoteScreen> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    var noteProvider = Provider.of<CRUDModel>(context);
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
-            onPressed: write,
+            onPressed: () async{
+              if(_formKey.currentState.validate()){
+                _formKey.currentState.save();
+                await noteProvider.addNote(Note(noteTitle: _noteTitle, noteBody: _noteBody));
+                Navigator.pop(context);
+              }
+            },
             icon: Icon(
               Icons.check,
               color: Colors.white,
@@ -108,17 +117,17 @@ class _MakeNoteScreenState extends State<MakeNoteScreen> {
     );
   }
 
-  write() async {
-    final formState = _formKey.currentState;
-    if (formState.validate()) {
-      formState.save();
-      await Firestore.instance
-          .collection("notes")
-          .add(Note(noteTitle: _noteTitle, noteBody: _noteBody).toJson());
-
-      Navigator.pop(context);
-    }
-  }
+//  write() async {
+//    final formState = _formKey.currentState;
+//    if (formState.validate()) {
+//      formState.save();
+//      await Firestore.instance
+//          .collection("notes")
+//          .add(Note(noteTitle: _noteTitle, noteBody: _noteBody).toJson());
+//
+//      Navigator.pop(context);
+//    }
+//  }
 
 
 }

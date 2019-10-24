@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firestore_todo_app/models/Note.dart';
+import 'package:flutter_firestore_todo_app/core/models/Note.dart';
+import 'package:flutter_firestore_todo_app/core/viewmodels/CRUDModel.dart';
+import 'package:provider/provider.dart';
+
 
 class EditNoteScreen extends StatefulWidget {
   Note noteData;
 
-  EditNoteScreen(this.noteData);
+  EditNoteScreen({@required this.noteData});
 
   @override
   _EditNoteScreenState createState() => _EditNoteScreenState();
@@ -18,11 +21,19 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final noteProvider = Provider.of<CRUDModel>(context);
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
-            onPressed: update,
+            onPressed: ()async{
+              if(_formKey.currentState.validate()){
+                _formKey.currentState.save();
+                await noteProvider.updateNote( Note(noteTitle: _noteTitle, noteBody: _noteBody), widget.noteData.reference.documentID);
+                Navigator.pop(context);
+              }
+
+            },
             icon: Icon(
               Icons.check,
               color: Colors.white,
@@ -102,17 +113,21 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
     );
   }
 
-  update() async {
-    final formState = _formKey.currentState;
-    if (formState.validate()) {
-      formState.save();
-      await Firestore.instance
-          .collection("notes")
-          .document(widget.noteData.reference.documentID)
-          .updateData(
-              Note(noteTitle: _noteTitle, noteBody: _noteBody).toJson());
+  update(){
 
-      Navigator.pop(context);
-    }
   }
+
+//  update() async {
+//    final formState = _formKey.currentState;
+//    if (formState.validate()) {
+//      formState.save();
+//      await Firestore.instance
+//          .collection("notes")
+//          .document(widget.noteData.reference.documentID)
+//          .updateData(
+//              Note(noteTitle: _noteTitle, noteBody: _noteBody).toJson());
+//
+//      Navigator.pop(context);
+//    }
+//  }
 }

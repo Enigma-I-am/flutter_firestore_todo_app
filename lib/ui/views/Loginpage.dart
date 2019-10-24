@@ -2,9 +2,9 @@ import 'dart:ui' as prefix0;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_firestore_todo_app/ui/ListScreen.dart';
+import 'package:flutter_firestore_todo_app/ui/views/ListScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_firestore_todo_app/ui/SignUp.dart';
+import 'package:flutter_firestore_todo_app/ui/views/SignUp.dart';
 
 class LoginPage extends StatefulWidget {
   @override

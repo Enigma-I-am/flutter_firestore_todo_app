@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firestore_todo_app/ui/Loginpage.dart';
-import 'package:flutter_firestore_todo_app/ui/MakeNoteScreen.dart';
+import 'package:flutter_firestore_todo_app/core/viewmodels/CRUDModel.dart';
+import 'package:flutter_firestore_todo_app/ui/views/Loginpage.dart';
+import 'package:flutter_firestore_todo_app/ui/views/MakeNoteScreen.dart';
 import 'package:flutter_firestore_todo_app/ui/widgets/NoteListItem.dart';
+import 'package:provider/provider.dart';
 
-import '../models/Note.dart';
+import '../../core/models/Note.dart';
 
 class ListScreen extends StatefulWidget {
   final FirebaseUser user;
@@ -20,8 +22,10 @@ class ListScreen extends StatefulWidget {
 }
 
 class _ListScreenState extends State<ListScreen> {
+
   @override
   Widget build(BuildContext context) {
+    final noteProvider = Provider.of<CRUDModel>(context);
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -41,7 +45,7 @@ class _ListScreenState extends State<ListScreen> {
         backgroundColor: Colors.grey.shade900,
         elevation: 1.0,
       ),
-      body: BuildList(),
+      body: BuildList(noteProvider),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         onPressed: () {
@@ -68,12 +72,16 @@ class _ListScreenState extends State<ListScreen> {
 }
 
 class BuildList extends StatelessWidget {
+  CRUDModel provider;
+
+  BuildList(this.provider);
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection("notes").snapshots(),
+      stream: provider.fetchProductsAsStream(),
       // ignore: missing_return
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
           return Center(
             child: Container(
